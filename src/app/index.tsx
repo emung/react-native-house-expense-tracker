@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import ExpensesHeader from "../components/ExpensesHeader";
 import AllExpenses from "../server/expense/AllExpenses";
 import ExpenseService from "../server/expense/ExpenseService";
+import ExpensesList from "@/src/components/ExpensesList";
 
 const expenseService = new ExpenseService();
 
@@ -25,6 +26,7 @@ export default function Index() {
     <View style={styles.container}>
       <Text style={styles.title}>House expenses</Text>
       <ExpensesHeader allExpenses={allExpensesWithMeta} />
+      <ExpensesList expenses={allExpensesWithMeta?.expenses || []} />
     </View>
   );
 }
