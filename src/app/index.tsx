@@ -1,33 +1,30 @@
-import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import ExpensesHeader from "../components/ExpensesHeader";
+import AllExpenses from "../server/expense/AllExpenses";
 import ExpenseService from "../server/expense/ExpenseService";
 
 const expenseService = new ExpenseService();
 
 export default function Index() {
-  const [expenseId, setExpenseId] = useState("");
+  const [allExpensesWithMeta, setAllExpensesWithMeta] =
+    useState<AllExpenses | null>(null);
 
-  const fetchExpenseById = async (id: number) =>
-    await expenseService.getExpenseById(id);
+  useEffect(() => {
+    (async () => {
+      const allExpensesResponse: AllExpenses = await fetchAllExpenses();
+      setAllExpensesWithMeta(allExpensesResponse);
+    })();
+  }, []);
+
+  const fetchAllExpenses = async () => {
+    return await expenseService.getAllExpenses();
+  };
 
   return (
     <View style={styles.container}>
-      <TextInput
-        placeholder="Type expense ID"
-        onChangeText={setExpenseId}
-        style={{
-          height: 40,
-          padding: 5,
-          marginHorizontal: 8,
-          borderWidth: 1,
-        }}
-      />
-      <Pressable
-        style={styles.button}
-        onPress={() => fetchExpenseById(Number(expenseId))}
-      >
-        <Text>Get Expense</Text>
-      </Pressable>
+      <Text style={styles.title}>House expenses</Text>
+      <ExpensesHeader allExpenses={allExpensesWithMeta} />
     </View>
   );
 }
@@ -37,13 +34,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#121212", // Dark background
   },
   button: {
     padding: 10,
-    backgroundColor: "lightblue",
+    backgroundColor: "#BB86FC", // Light purple accent for dark mode
     borderRadius: 5,
-    borderColor: "gray",
+    borderColor: "#3700B3",
     borderWidth: 1,
     margin: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#E0E0E0", // Light text color
   },
 });
