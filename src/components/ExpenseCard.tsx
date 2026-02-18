@@ -14,7 +14,15 @@ export default function ExpenseCard({ expense }: ExpenseCardProps) {
           <Text style={styles.category}>{expense.category}</Text>
         </View>
         <Text style={styles.recipient}>{expense.recipient}</Text>
-        <Text style={styles.date}>{expense.date}</Text>
+        <Text style={styles.date}>
+          {new Date(expense.date).toLocaleDateString("de-DE", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </Text>
       </View>
       <View style={styles.rightContent}>
         <Text style={styles.amount}>
