@@ -34,8 +34,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    paddingTop: 60,
+    paddingTop: 40,
     paddingLeft: 20,
+    paddingRight: 20,
     backgroundColor: "#121212", // Dark background
   },
   button: {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 36,
     fontWeight: "bold",
     color: "#E0E0E0", // Light text color
     marginBottom: 20,

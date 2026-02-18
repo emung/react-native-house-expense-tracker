@@ -38,10 +38,10 @@ export default function ExpensesHeader({ allExpenses }: ExpensesHeaderProps) {
 
   return (
     <View style={styles.container}>
-      <ExpenseHeaderCard text="EUR expenses" value={totalEurCount} />
-      <ExpenseHeaderCard text="EUR total sum" value={totalEurSum} />
-      <ExpenseHeaderCard text="RON expenses" value={totalRonCount} />
-      <ExpenseHeaderCard text="RON total sum" value={totalRonSum} />
+      <ExpenseHeaderCard text="EUR count" value={totalEurCount} />
+      <ExpenseHeaderCard text="EUR sum" value={totalEurSum} />
+      <ExpenseHeaderCard text="RON count" value={totalRonCount} />
+      <ExpenseHeaderCard text="RON sum" value={totalRonSum} />
     </View>
   );
 }
@@ -49,8 +49,9 @@ export default function ExpensesHeader({ allExpenses }: ExpensesHeaderProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#121212",
+    width: "100%",
   },
 });

@@ -19,10 +19,11 @@ export default function ExpenseHeaderCard({
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#1E1E1E", // Dark card background
     borderRadius: 12,
     padding: 20,
-    marginHorizontal: 16,
+    marginHorizontal: 4,
     marginVertical: 8,
     // Shadow for iOS
     shadowColor: "#000",
@@ -38,14 +39,14 @@ const styles = StyleSheet.create({
     borderColor: "#333", // Subtle border for definition
   },
   text: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "600",
     color: "#E0E0E0", // Light text color
     textAlign: "center",
     marginBottom: 8,
   },
   value: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: "bold",
     color: "#BB86FC", // Accent color for value
     textAlign: "center",
