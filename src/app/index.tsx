@@ -32,8 +32,10 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingTop: 60,
+    paddingLeft: 20,
     backgroundColor: "#121212", // Dark background
   },
   button: {
@@ -48,5 +50,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#E0E0E0", // Light text color
+    marginBottom: 20,
   },
 });

@@ -48,9 +48,8 @@ export default function ExpensesHeader({ allExpenses }: ExpensesHeaderProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#121212",
   },
