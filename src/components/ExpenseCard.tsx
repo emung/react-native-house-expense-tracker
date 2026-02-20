@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   categoryContainer: {
-    backgroundColor: "#3700B3", // Darker purple for category chip
+    backgroundColor: "#6647aeff", // Darker purple for category chip
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 16,
