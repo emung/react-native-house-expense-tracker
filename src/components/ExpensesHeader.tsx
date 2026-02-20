@@ -40,9 +40,9 @@ export default function ExpensesHeader({ allExpenses }: ExpensesHeaderProps) {
   return (
     <View style={styles.container}>
       <ExpenseHeaderCard text="EUR count" value={totalEurCount} />
-      <ExpenseHeaderCard text="EUR sum" value={totalEurSum} />
+      <ExpenseHeaderCard text="EUR sum" value={totalEurSum} suffix="€" />
       <ExpenseHeaderCard text="RON count" value={totalRonCount} />
-      <ExpenseHeaderCard text="RON sum" value={totalRonSum} />
+      <ExpenseHeaderCard text="RON sum" value={totalRonSum} suffix="RON" />
       <Pressable style={styles.addButton}>
         <Ionicons name="add" size={28} color="#BB86FC" />
       </Pressable>
