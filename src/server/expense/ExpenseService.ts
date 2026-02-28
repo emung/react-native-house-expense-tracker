@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { EXPENSES_URL } from '../constants';
+import CreateExpenseReqBody from './CreateExpenseReqBody';
 import Expense from './Expense';
 import ExpensesWithMeta from './ExpensesWithMeta';
-import CreateExpenseReqBody from './CreateExpenseReqBody';
+import UpdateExpenseReqBody from './UpdateExpenseReqBody';
 
 export default class ExpenseService {
   /**
@@ -95,6 +96,38 @@ export default class ExpenseService {
       return response.data;
     } catch (error) {
       console.error('Error creating expense:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Updates an existing expense on the server.
+   * @param id - The ID of the expense to update
+   * @param expense - The expense to update
+   * @returns A promise that resolves to the updated Expense object
+   * @throws Error if the network request fails
+   */
+  async updateExpense(id: number, expense: UpdateExpenseReqBody): Promise<Expense> {
+    try {
+      const response = await axios.patch<Expense>(`${EXPENSES_URL}/${id}`, expense);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating expense:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes an expense from the server.
+   * @param id - The ID of the expense to delete
+   * @returns A promise that resolves when the expense is deleted
+   * @throws Error if the network request fails
+   */
+  async deleteExpense(id: number): Promise<void> {
+    try {
+      await axios.delete(`${EXPENSES_URL}/${id}`);
+    } catch (error) {
+      console.error('Error deleting expense:', error);
       throw error;
     }
   }
