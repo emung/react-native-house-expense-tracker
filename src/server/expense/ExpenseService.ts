@@ -2,6 +2,7 @@ import axios from 'axios';
 import { EXPENSES_URL } from '../constants';
 import Expense from './Expense';
 import ExpensesWithMeta from './ExpensesWithMeta';
+import CreateExpenseReqBody from './CreateExpenseReqBody';
 
 export default class ExpenseService {
   /**
@@ -78,6 +79,22 @@ export default class ExpenseService {
       return response.data;
     } catch (error) {
       console.error('Error fetching expenses by description:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Creates a new expense on the server.
+   * @param expense - The expense to create
+   * @returns A promise that resolves to the created Expense object
+   * @throws Error if the network request fails
+   */
+  async createExpense(expense: CreateExpenseReqBody): Promise<Expense> {
+    try {
+      const response = await axios.post<Expense>(EXPENSES_URL, expense);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating expense:', error);
       throw error;
     }
   }
