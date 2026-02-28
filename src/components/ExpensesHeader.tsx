@@ -1,7 +1,6 @@
 import { CurrencyMetadata } from '@/src/server/expense/ExpensesWithMeta';
-import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ExpenseHeaderCard from './ExpenseHeaderCard';
 
 type ExpensesHeaderProps = {
@@ -33,9 +32,6 @@ export default function ExpensesHeader({ expensesMeta }: ExpensesHeaderProps) {
         <ExpenseHeaderCard text="RON count" value={totalRonCount} />
         <ExpenseHeaderCard text="RON sum" value={totalRonSum} suffix="RON" />
       </View>
-      <Pressable style={styles.addButton}>
-        <Ionicons name="add" size={28} color="#BB86FC" />
-      </Pressable>
     </View>
   );
 }
@@ -52,25 +48,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between'
-  },
-  addButton: {
-    backgroundColor: '#1E1E1E',
-    borderRadius: 12,
-    marginHorizontal: 4,
-    marginVertical: 4,
-    borderWidth: 1,
-    borderColor: '#333',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    width: 44,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4
   }
 });
