@@ -1,20 +1,22 @@
+import ExpensesList from "@/src/components/ExpensesList";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import ExpensesHeader from "../components/ExpensesHeader";
-import AllExpenses from "../server/expense/AllExpenses";
+import AllExpenses, { CurrencySum } from "../server/expense/AllExpenses";
 import ExpenseService from "../server/expense/ExpenseService";
-import ExpensesList from "@/src/components/ExpensesList";
 
 const expenseService = new ExpenseService();
 
 export default function Index() {
   const [allExpensesWithMeta, setAllExpensesWithMeta] =
     useState<AllExpenses | null>(null);
+  const [expensesMeta, setExpensesMeta] = useState<CurrencySum[] | null>(null);
 
   useEffect(() => {
     (async () => {
       const allExpensesResponse: AllExpenses = await fetchAllExpenses();
       setAllExpensesWithMeta(allExpensesResponse);
+      setExpensesMeta(allExpensesResponse.sums);
     })();
   }, []);
 
@@ -25,7 +27,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>House expenses</Text>
-      <ExpensesHeader allExpenses={allExpensesWithMeta} />
+      <ExpensesHeader expensesMeta={expensesMeta} />
       <ExpensesList expenses={allExpensesWithMeta?.expenses || []} />
     </View>
   );

@@ -1,41 +1,37 @@
-import AllExpenses from "@/src/server/expense/AllExpenses";
+import { CurrencySum } from "@/src/server/expense/AllExpenses";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import ExpenseHeaderCard from "./ExpenseHeaderCard";
 
 type ExpensesHeaderProps = {
-  allExpenses: AllExpenses | null;
+  expensesMeta: CurrencySum[] | null;
 };
 
-export default function ExpensesHeader({ allExpenses }: ExpensesHeaderProps) {
+export default function ExpensesHeader({ expensesMeta }: ExpensesHeaderProps) {
   const [totalEurCount, setTotalEurCount] = useState(0);
   const [totalEurSum, setTotalEurSum] = useState(0);
   const [totalRonCount, setTotalRonCount] = useState(0);
   const [totalRonSum, setTotalRonSum] = useState(0);
 
   useEffect(() => {
-    if (allExpenses) {
+    if (expensesMeta) {
+      const eurExpensesMeta = expensesMeta.find((meta) => meta.currency === "EUR");
+      const ronExpensesMeta = expensesMeta.find((meta) => meta.currency === "RON");
       setTotalEurCount(
-        allExpenses.expenses.filter((expense) => expense.currency === "EUR")
-          .length
+        eurExpensesMeta?.count || 0
       );
       setTotalRonCount(
-        allExpenses.expenses.filter((expense) => expense.currency === "RON")
-          .length
+        ronExpensesMeta?.count || 0
       );
       setTotalEurSum(
-        allExpenses.expenses
-          .filter((expense) => expense.currency === "EUR")
-          .reduce((acc, expense) => acc + expense.amount, 0)
+        eurExpensesMeta?.sum || 0
       );
       setTotalRonSum(
-        allExpenses.expenses
-          .filter((expense) => expense.currency === "RON")
-          .reduce((acc, expense) => acc + expense.amount, 0)
+        ronExpensesMeta?.sum || 0
       );
     }
-  }, [allExpenses]);
+  }, [expensesMeta]);
 
   return (
     <View style={styles.outerContainer}>
