@@ -1,7 +1,7 @@
-import axios from "axios";
-import { EXPENSES_URL } from "../constants";
-import Expense from "./Expense";
-import ExpensesWithMeta from "./ExpensesWithMeta";
+import axios from 'axios';
+import { EXPENSES_URL } from '../constants';
+import Expense from './Expense';
+import ExpensesWithMeta from './ExpensesWithMeta';
 
 export default class ExpenseService {
   /**
@@ -15,7 +15,7 @@ export default class ExpenseService {
       const response = await axios.get<Expense>(`${EXPENSES_URL}/${id}`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching expense:", error);
+      console.error('Error fetching expense:', error);
       throw error;
     }
   }
@@ -30,7 +30,7 @@ export default class ExpenseService {
       const response = await axios.get<ExpensesWithMeta>(EXPENSES_URL);
       return response.data;
     } catch (error) {
-      console.error("Error fetching expenses:", error);
+      console.error('Error fetching expenses:', error);
       throw error;
     }
   }
@@ -45,7 +45,7 @@ export default class ExpenseService {
       const response = await axios.get<string[]>(`${EXPENSES_URL}/categories`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching distinct expense categories:", error);
+      console.error('Error fetching distinct expense categories:', error);
       throw error;
     }
   }
@@ -61,7 +61,7 @@ export default class ExpenseService {
       const response = await axios.get<ExpensesWithMeta>(`${EXPENSES_URL}/by-category?category=${category}`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching expenses by category:", error);
+      console.error('Error fetching expenses by category:', error);
       throw error;
     }
   }
@@ -77,9 +77,8 @@ export default class ExpenseService {
       const response = await axios.get<ExpensesWithMeta>(`${EXPENSES_URL}/by-description?description=${description}`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching expenses by description:", error);
+      console.error('Error fetching expenses by description:', error);
       throw error;
     }
   }
-
 }

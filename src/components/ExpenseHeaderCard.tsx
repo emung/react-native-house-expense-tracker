@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from 'react-native';
 
 type ExpenseHeaderCardProps = {
   text: string;
@@ -6,48 +6,47 @@ type ExpenseHeaderCardProps = {
   suffix?: string;
 };
 
-export default function ExpenseHeaderCard({
-  text,
-  value,
-  suffix,
-}: ExpenseHeaderCardProps) {
+export default function ExpenseHeaderCard({ text, value, suffix }: ExpenseHeaderCardProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{text}</Text>
-      <Text style={styles.value}>{value}{suffix ? ` ${suffix}` : ""}</Text>
+      <Text style={styles.value}>
+        {value}
+        {suffix ? ` ${suffix}` : ''}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: "48%",
-    backgroundColor: "#1E1E1E",
+    width: '48%',
+    backgroundColor: '#1E1E1E',
     borderRadius: 12,
     padding: 12,
     marginVertical: 4,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 4,
     borderWidth: 1,
-    borderColor: "#333",
+    borderColor: '#333'
   },
   text: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#E0E0E0",
-    textAlign: "center",
-    marginBottom: 4,
+    fontWeight: '600',
+    color: '#E0E0E0',
+    textAlign: 'center',
+    marginBottom: 4
   },
   value: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#BB86FC",
-    textAlign: "center",
-  },
+    fontWeight: 'bold',
+    color: '#BB86FC',
+    textAlign: 'center'
+  }
 });
