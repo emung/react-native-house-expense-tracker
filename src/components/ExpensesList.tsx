@@ -4,13 +4,15 @@ import { FlatList, StyleSheet, View } from 'react-native';
 
 type ExpensesListProps = {
   expenses: Expense[];
+  onEdit: (expense: Expense) => void;
+  onDelete: (expense: Expense) => void;
 };
-export default function ExpensesList({ expenses }: ExpensesListProps) {
+export default function ExpensesList({ expenses, onEdit, onDelete }: ExpensesListProps) {
   return (
     <View style={styles.container}>
       <FlatList
         data={expenses}
-        renderItem={({ item }) => <ExpenseCard expense={item} />}
+        renderItem={({ item }) => <ExpenseCard expense={item} onEdit={onEdit} onDelete={onDelete} />}
         contentContainerStyle={styles.listContent}
       />
     </View>

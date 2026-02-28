@@ -1,11 +1,14 @@
 import Expense from '@/src/server/expense/Expense';
-import { StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 type ExpenseCardProps = {
   expense: Expense;
+  onEdit: (expense: Expense) => void;
+  onDelete: (expense: Expense) => void;
 };
 
-export default function ExpenseCard({ expense }: ExpenseCardProps) {
+export default function ExpenseCard({ expense, onEdit, onDelete }: ExpenseCardProps) {
   return (
     <View style={styles.container}>
       {/* Accent bar */}
@@ -25,20 +28,30 @@ export default function ExpenseCard({ expense }: ExpenseCardProps) {
         {/* Recipient */}
         <Text style={styles.recipient}>{expense.recipient}</Text>
 
-        {/* Bottom row: category chip + date */}
+        {/* Bottom row: category chip + date + actions */}
         <View style={styles.bottomRow}>
           <View style={styles.categoryChip}>
             <Text style={styles.categoryText}>{expense.category}</Text>
           </View>
-          <Text style={styles.date}>
-            {new Date(expense.date).toLocaleDateString('de-DE', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            })}
-          </Text>
+          <View style={styles.bottomRight}>
+            <Text style={styles.date}>
+              {new Date(expense.date).toLocaleDateString('de-DE', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
+            </Text>
+            <View style={styles.actions}>
+              <Pressable onPress={() => onEdit(expense)} style={styles.actionButton}>
+                <Ionicons name="create-outline" size={18} color="#BB86FC" />
+              </Pressable>
+              <Pressable onPress={() => onDelete(expense)} style={styles.actionButton}>
+                <Ionicons name="trash-outline" size={18} color="#CF6679" />
+              </Pressable>
+            </View>
+          </View>
         </View>
       </View>
     </View>
@@ -123,5 +136,18 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 12,
     color: '#707070'
+  },
+  bottomRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
+  },
+  actions: {
+    flexDirection: 'row',
+    gap: 4
+  },
+  actionButton: {
+    padding: 6,
+    borderRadius: 8
   }
 });
