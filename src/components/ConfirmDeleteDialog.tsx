@@ -17,7 +17,7 @@ export default function ConfirmDeleteDialog({
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
       <Pressable style={styles.overlay} onPress={onCancel}>
-        <View style={styles.dialog} onStartShouldSetResponder={() => true}>
+        <Pressable style={styles.dialog} onPress={() => {}}>
           <Ionicons name="warning-outline" size={40} color="#CF6679" style={styles.icon} />
           <Text style={styles.title}>Delete Expense</Text>
           <Text style={styles.message}>Are you sure you want to delete &quot;{expenseDescription}&quot;?</Text>
@@ -32,7 +32,7 @@ export default function ConfirmDeleteDialog({
               <Text style={styles.deleteButtonText}>Delete</Text>
             </Pressable>
           </View>
-        </View>
+        </Pressable>
       </Pressable>
     </Modal>
   );

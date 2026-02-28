@@ -153,10 +153,7 @@ export default function ExpenseFormModal({
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <Pressable style={styles.overlay} onPress={onClose}>
-        <View
-          style={[styles.dialog, isWide ? styles.dialogWide : styles.dialogNarrow]}
-          onStartShouldSetResponder={() => true}
-        >
+        <Pressable style={[styles.dialog, isWide ? styles.dialogWide : styles.dialogNarrow]} onPress={() => {}}>
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.title}>{isEditMode ? 'Edit Expense' : 'Add Expense'}</Text>
@@ -235,7 +232,7 @@ export default function ExpenseFormModal({
               )}
             </Pressable>
           </View>
-        </View>
+        </Pressable>
       </Pressable>
 
       {/* Category dropdown modal */}
@@ -246,7 +243,7 @@ export default function ExpenseFormModal({
         onRequestClose={() => setCategoryDropdownVisible(false)}
       >
         <Pressable style={styles.overlay} onPress={() => setCategoryDropdownVisible(false)}>
-          <View style={styles.categoryModal}>
+          <Pressable style={styles.categoryModal} onPress={() => {}}>
             <Text style={styles.categoryModalTitle}>Select Category</Text>
 
             {/* Free text input for new category */}
@@ -295,7 +292,7 @@ export default function ExpenseFormModal({
                 </Pressable>
               )}
             />
-          </View>
+          </Pressable>
         </Pressable>
       </Modal>
     </Modal>
