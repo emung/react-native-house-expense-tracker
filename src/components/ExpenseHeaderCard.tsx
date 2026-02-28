@@ -21,12 +21,11 @@ export default function ExpenseHeaderCard({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "48%",
     backgroundColor: "#1E1E1E",
     borderRadius: 12,
-    padding: 20,
-    marginHorizontal: 4,
-    marginVertical: 8,
+    padding: 12,
+    marginVertical: 4,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -39,14 +38,14 @@ const styles = StyleSheet.create({
     borderColor: "#333",
   },
   text: {
-    fontSize: 24,
+    fontSize: 14,
     fontWeight: "600",
     color: "#E0E0E0",
     textAlign: "center",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   value: {
-    fontSize: 32,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#BB86FC",
     textAlign: "center",

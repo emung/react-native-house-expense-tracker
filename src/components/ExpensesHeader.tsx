@@ -38,11 +38,13 @@ export default function ExpensesHeader({ allExpenses }: ExpensesHeaderProps) {
   }, [allExpenses]);
 
   return (
-    <View style={styles.container}>
-      <ExpenseHeaderCard text="EUR count" value={totalEurCount} />
-      <ExpenseHeaderCard text="EUR sum" value={totalEurSum} suffix="€" />
-      <ExpenseHeaderCard text="RON count" value={totalRonCount} />
-      <ExpenseHeaderCard text="RON sum" value={totalRonSum} suffix="RON" />
+    <View style={styles.outerContainer}>
+      <View style={styles.cardsContainer}>
+        <ExpenseHeaderCard text="EUR count" value={totalEurCount} />
+        <ExpenseHeaderCard text="EUR sum" value={totalEurSum} suffix="€" />
+        <ExpenseHeaderCard text="RON count" value={totalRonCount} />
+        <ExpenseHeaderCard text="RON sum" value={totalRonSum} suffix="RON" />
+      </View>
       <Pressable style={styles.addButton}>
         <Ionicons name="add" size={28} color="#BB86FC" />
       </Pressable>
@@ -51,18 +53,23 @@ export default function ExpensesHeader({ allExpenses }: ExpensesHeaderProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  outerContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     backgroundColor: "#121212",
     width: "100%",
+  },
+  cardsContainer: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   addButton: {
     backgroundColor: "#1E1E1E",
     borderRadius: 12,
     marginHorizontal: 4,
-    marginVertical: 8,
+    marginVertical: 4,
     borderWidth: 1,
     borderColor: "#333",
     justifyContent: "center",
