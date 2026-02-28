@@ -1,11 +1,11 @@
-import { CurrencySum } from "@/src/server/expense/AllExpenses";
+import { CurrencyMetadata } from "@/src/server/expense/ExpensesWithMeta";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import ExpenseHeaderCard from "./ExpenseHeaderCard";
 
 type ExpensesHeaderProps = {
-  expensesMeta: CurrencySum[] | null;
+  expensesMeta: CurrencyMetadata[] | null;
 };
 
 export default function ExpensesHeader({ expensesMeta }: ExpensesHeaderProps) {
@@ -18,18 +18,10 @@ export default function ExpensesHeader({ expensesMeta }: ExpensesHeaderProps) {
     if (expensesMeta) {
       const eurExpensesMeta = expensesMeta.find((meta) => meta.currency === "EUR");
       const ronExpensesMeta = expensesMeta.find((meta) => meta.currency === "RON");
-      setTotalEurCount(
-        eurExpensesMeta?.count || 0
-      );
-      setTotalRonCount(
-        ronExpensesMeta?.count || 0
-      );
-      setTotalEurSum(
-        eurExpensesMeta?.sum || 0
-      );
-      setTotalRonSum(
-        ronExpensesMeta?.sum || 0
-      );
+      setTotalEurCount(eurExpensesMeta?.count || 0);
+      setTotalRonCount(ronExpensesMeta?.count || 0);
+      setTotalEurSum(eurExpensesMeta?.sum || 0);
+      setTotalRonSum(ronExpensesMeta?.sum || 0);
     }
   }, [expensesMeta]);
 

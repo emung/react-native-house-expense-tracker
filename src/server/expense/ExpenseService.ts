@@ -1,7 +1,7 @@
 import axios from "axios";
 import { EXPENSES_URL } from "../constants";
-import AllExpenses from "./AllExpenses";
 import Expense from "./Expense";
+import ExpensesWithMeta from "./ExpensesWithMeta";
 
 export default class ExpenseService {
   /**
@@ -25,9 +25,9 @@ export default class ExpenseService {
    * @returns A promise that resolves to an AllExpenses object containing the list of expenses
    * @throws Error if the network request fails
    */
-  async getAllExpenses(): Promise<AllExpenses> {
+  async getAllExpenses(): Promise<ExpensesWithMeta> {
     try {
-      const response = await axios.get<AllExpenses>(EXPENSES_URL);
+      const response = await axios.get<ExpensesWithMeta>(EXPENSES_URL);
       return response.data;
     } catch (error) {
       console.error("Error fetching expenses:", error);

@@ -2,19 +2,19 @@ import ExpensesList from "@/src/components/ExpensesList";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import ExpensesHeader from "../components/ExpensesHeader";
-import AllExpenses, { CurrencySum } from "../server/expense/AllExpenses";
 import ExpenseService from "../server/expense/ExpenseService";
+import ExpensesWithMeta, { CurrencyMetadata } from "../server/expense/ExpensesWithMeta";
 
 const expenseService = new ExpenseService();
 
 export default function Index() {
   const [allExpensesWithMeta, setAllExpensesWithMeta] =
-    useState<AllExpenses | null>(null);
-  const [expensesMeta, setExpensesMeta] = useState<CurrencySum[] | null>(null);
+    useState<ExpensesWithMeta | null>(null);
+  const [expensesMeta, setExpensesMeta] = useState<CurrencyMetadata[] | null>(null);
 
   useEffect(() => {
     (async () => {
-      const allExpensesResponse: AllExpenses = await fetchAllExpenses();
+      const allExpensesResponse: ExpensesWithMeta = await fetchAllExpenses();
       setAllExpensesWithMeta(allExpensesResponse);
       setExpensesMeta(allExpensesResponse.sums);
     })();

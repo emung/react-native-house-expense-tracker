@@ -1,12 +1,12 @@
 import Expense from "./Expense";
 
-export default interface AllExpenses {
+export default interface ExpensesWithMeta {
   expenses: Expense[];
   amount: number;
-  sums: CurrencySum[];
+  sums: CurrencyMetadata[];
 }
 
-export interface CurrencySum {
+export interface CurrencyMetadata {
   currency: string;
   sum: number;
   count: number;
