@@ -4,7 +4,7 @@ import ExpenseFormModal from '@/src/components/ExpenseFormModal';
 import ExpensesList from '@/src/components/ExpensesList';
 import SearchFilterBar from '@/src/components/SearchFilterBar';
 import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Platform, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import ExpensesHeader from '../components/ExpensesHeader';
 import CreateExpenseReqBody from '../server/expense/CreateExpenseReqBody';
 import Expense from '../server/expense/Expense';
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    paddingTop: 10,
+    paddingTop: Platform.OS === 'ios' ? 40 : 10,
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: '#121212' // Dark background
