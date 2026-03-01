@@ -5,6 +5,6 @@ export default interface Expense {
   description: string;
   category: string;
   recipient: string;
-  currency: string;
+  currency: 'EUR' | 'RON';
   userId: number;
 }

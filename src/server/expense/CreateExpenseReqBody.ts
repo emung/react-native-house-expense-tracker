@@ -5,4 +5,5 @@ export default interface CreateExpenseReqBody {
   recipient: string;
   currency: 'EUR' | 'RON';
   userId: number;
+  date?: string;
 }

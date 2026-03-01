@@ -5,6 +5,7 @@ import ExpensesList from '@/src/components/ExpensesList';
 import SearchFilterBar from '@/src/components/SearchFilterBar';
 import { useEffect, useRef, useState } from 'react';
 import { Platform, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { de, registerTranslation } from 'react-native-paper-dates';
 import ExpensesHeader from '../components/ExpensesHeader';
 import CreateExpenseReqBody from '../server/expense/CreateExpenseReqBody';
 import Expense from '../server/expense/Expense';
@@ -13,6 +14,7 @@ import ExpensesWithMeta, { CurrencyMetadata } from '../server/expense/ExpensesWi
 import UpdateExpenseReqBody from '../server/expense/UpdateExpenseReqBody';
 
 const expenseService = new ExpenseService();
+registerTranslation('de', de);
 
 export default function Index() {
   const { width } = useWindowDimensions();

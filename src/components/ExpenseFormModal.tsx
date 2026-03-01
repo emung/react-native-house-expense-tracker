@@ -11,6 +11,7 @@ import {
   View,
   useWindowDimensions
 } from 'react-native';
+import { DatePickerModal } from 'react-native-paper-dates';
 import CreateExpenseReqBody from '../server/expense/CreateExpenseReqBody';
 import Expense from '../server/expense/Expense';
 import UpdateExpenseReqBody from '../server/expense/UpdateExpenseReqBody';
@@ -43,11 +44,22 @@ export default function ExpenseFormModal({
   const [category, setCategory] = useState('');
   const [recipient, setRecipient] = useState('');
   const [currency, setCurrency] = useState<'EUR' | 'RON'>('EUR');
+  const [date, setDate] = useState<Date>(new Date());
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
   const [categoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
+
+  const dateToIsoString = (d: Date): string => {
+    const now = new Date();
+    const isToday =
+      d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+    if (isToday) return now.toISOString();
+    const noon = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0);
+    return noon.toISOString();
+  };
 
   const isEditMode = expense !== null;
 
@@ -59,13 +71,15 @@ export default function ExpenseFormModal({
         setAmount(expense.amount.toString());
         setCategory(expense.category);
         setRecipient(expense.recipient);
-        setCurrency(expense.currency as 'EUR' | 'RON');
+        setCurrency(expense.currency);
+        setDate(new Date(expense.date));
       } else {
         setDescription('');
         setAmount('');
         setCategory('');
         setRecipient('');
         setCurrency('EUR');
+        setDate(new Date());
       }
       setErrors({});
       setApiError('');
@@ -100,7 +114,8 @@ export default function ExpenseFormModal({
           category: category.trim(),
           recipient: recipient.trim(),
           currency,
-          userId: DEFAULT_USER_ID
+          userId: DEFAULT_USER_ID,
+          date: dateToIsoString(date)
         });
       } else {
         await onSave({
@@ -109,7 +124,8 @@ export default function ExpenseFormModal({
           category: category.trim(),
           recipient: recipient.trim(),
           currency,
-          userId: DEFAULT_USER_ID
+          userId: DEFAULT_USER_ID,
+          date: dateToIsoString(date)
         });
       }
     } catch {
@@ -190,6 +206,21 @@ export default function ExpenseFormModal({
             {renderField('Recipient', recipient, setRecipient, 'recipient', {
               placeholder: 'e.g. Supermarket'
             })}
+
+            {/* Date picker */}
+            <View style={styles.fieldContainer}>
+              <Text style={styles.label}>Date</Text>
+              <Pressable style={[styles.input, styles.categoryPicker]} onPress={() => setDatePickerOpen(true)}>
+                <Text style={styles.categoryText}>
+                  {date.toLocaleDateString('de-DE', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                  })}
+                </Text>
+                <Ionicons name="calendar-outline" size={16} color="#9E9E9E" />
+              </Pressable>
+            </View>
 
             {/* Currency toggle */}
             <View style={styles.fieldContainer}>
@@ -295,6 +326,25 @@ export default function ExpenseFormModal({
           </Pressable>
         </Pressable>
       </Modal>
+
+      {/* Date picker modal */}
+      <DatePickerModal
+        locale="de"
+        mode="single"
+        visible={datePickerOpen}
+        onDismiss={() => setDatePickerOpen(false)}
+        date={date}
+        onConfirm={() => {}}
+        onChange={({ date: pickedDate }) => {
+          setDatePickerOpen(false);
+          if (pickedDate) setDate(pickedDate);
+        }}
+        startWeekOnMonday={true}
+        saveLabel=" "
+        label="Select expense date"
+        endYear={2030}
+        startYear={2020}
+      />
     </Modal>
   );
 }
