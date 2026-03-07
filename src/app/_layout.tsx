@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import { MD3DarkTheme, PaperProvider } from 'react-native-paper';
 
 const theme = {
@@ -14,7 +14,7 @@ const theme = {
 export default function RootLayout() {
   return (
     <PaperProvider theme={theme}>
-      <Stack screenOptions={{ headerShown: false }} />
+      <Slot />
     </PaperProvider>
   );
 }
