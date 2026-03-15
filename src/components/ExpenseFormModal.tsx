@@ -39,6 +39,7 @@ export default function ExpenseFormModal({
   const { width } = useWindowDimensions();
   const isWide = width >= 768;
 
+  const [isRefund, setIsRefund] = useState(false);
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
@@ -73,6 +74,7 @@ export default function ExpenseFormModal({
         setRecipient(expense.recipient);
         setCurrency(expense.currency);
         setDate(new Date(expense.date));
+        setIsRefund(expense.isRefund || false);
       } else {
         setDescription('');
         setAmount('');
@@ -80,6 +82,7 @@ export default function ExpenseFormModal({
         setRecipient('');
         setCurrency('EUR');
         setDate(new Date());
+        setIsRefund(false);
       }
       setErrors({});
       setApiError('');
@@ -115,7 +118,8 @@ export default function ExpenseFormModal({
           recipient: recipient.trim(),
           currency,
           userId: DEFAULT_USER_ID,
-          date: dateToIsoString(date)
+          date: dateToIsoString(date),
+          isRefund: isRefund
         });
       } else {
         await onSave({
@@ -125,7 +129,8 @@ export default function ExpenseFormModal({
           recipient: recipient.trim(),
           currency,
           userId: DEFAULT_USER_ID,
-          date: dateToIsoString(date)
+          date: dateToIsoString(date),
+          isRefund: isRefund
         });
       }
     } catch {
@@ -166,13 +171,19 @@ export default function ExpenseFormModal({
     </View>
   );
 
+  const getExpenseTypeLabel = () => {
+    return `${isRefund ? 'Refund' : 'Expense'}`;
+  };
+
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <Pressable style={styles.overlay} onPress={onClose}>
         <Pressable style={[styles.dialog, isWide ? styles.dialogWide : styles.dialogNarrow]} onPress={() => {}}>
           {/* Header */}
           <View style={styles.header}>
-            <Text style={styles.title}>{isEditMode ? 'Edit Expense' : 'Add Expense'}</Text>
+            <Text style={styles.title}>
+              {isEditMode ? `Edit ${getExpenseTypeLabel()}` : `Add ${getExpenseTypeLabel()}`}
+            </Text>
             <Pressable onPress={onClose} style={styles.closeButton}>
               <Ionicons name="close" size={22} color="#9E9E9E" />
             </Pressable>
@@ -180,8 +191,25 @@ export default function ExpenseFormModal({
 
           {/* Form */}
           <View style={styles.form}>
+            <View style={styles.fieldContainer}>
+              <View style={styles.typeToggle}>
+                <Pressable
+                  style={[styles.typeOption, !isRefund && styles.typeSelectedExpense]}
+                  onPress={() => setIsRefund(false)}
+                >
+                  <Text style={[styles.typeOptionText, !isRefund && styles.typeSelectedText]}>Expense</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.typeOption, isRefund && styles.typeSelectedRefund]}
+                  onPress={() => setIsRefund(true)}
+                >
+                  <Text style={[styles.typeOptionText, isRefund && styles.typeSelectedText]}>Refund</Text>
+                </Pressable>
+              </View>
+            </View>
+
             {renderField('Description', description, setDescription, 'description', {
-              placeholder: 'e.g. Grocery shopping'
+              placeholder: 'e.g. Schrauben, Werkzeug, etc...'
             })}
             {renderField('Amount', amount, setAmount, 'amount', {
               keyboardType: 'decimal-pad',
@@ -204,7 +232,7 @@ export default function ExpenseFormModal({
             </View>
 
             {renderField('Recipient', recipient, setRecipient, 'recipient', {
-              placeholder: 'e.g. Supermarket'
+              placeholder: 'e.g. Hornbach, Obi, etc..'
             })}
 
             {/* Date picker */}
@@ -245,7 +273,11 @@ export default function ExpenseFormModal({
 
             {/* Submit button */}
             <Pressable
-              style={[styles.submitButton, loading && styles.submitButtonDisabled]}
+              style={[
+                styles.submitButton,
+                loading && styles.submitButtonDisabled,
+                isRefund ? styles.typeSelectedRefund : styles.typeSelectedExpense
+              ]}
               onPress={handleSubmit}
               disabled={loading}
             >
@@ -254,11 +286,13 @@ export default function ExpenseFormModal({
               ) : (
                 <>
                   <Ionicons
-                    name={isEditMode ? 'checkmark-circle-outline' : 'add-circle-outline'}
+                    name={`${isRefund ? 'add-circle-outline' : 'remove-circle-outline'}`}
                     size={18}
                     color="#FFFFFF"
                   />
-                  <Text style={styles.submitButtonText}>{isEditMode ? 'Update Expense' : 'Add Expense'}</Text>
+                  <Text style={styles.submitButtonText}>
+                    {isEditMode ? `Update ${getExpenseTypeLabel()}` : `Add ${getExpenseTypeLabel()}`}
+                  </Text>
                 </>
               )}
             </Pressable>
@@ -361,7 +395,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: '#333',
-    maxHeight: '90%'
+    maxHeight: '100%'
   },
   dialogWide: {
     width: 500
@@ -431,6 +465,35 @@ const styles = StyleSheet.create({
   },
   placeholderText: {
     color: '#707070'
+  },
+  typeToggle: {
+    flexDirection: 'row',
+    gap: 8
+  },
+  typeOption: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#333',
+    backgroundColor: '#2A2A2A',
+    alignItems: 'center'
+  },
+  typeSelectedExpense: {
+    backgroundColor: '#E57373',
+    borderColor: '#E57373'
+  },
+  typeSelectedRefund: {
+    backgroundColor: '#66BB6A',
+    borderColor: '#66BB6A'
+  },
+  typeOptionText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#9E9E9E'
+  },
+  typeSelectedText: {
+    color: '#FFFFFF'
   },
   currencyToggle: {
     flexDirection: 'row',
