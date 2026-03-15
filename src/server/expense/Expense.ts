@@ -7,4 +7,5 @@ export default interface Expense {
   recipient: string;
   currency: 'EUR' | 'RON';
   userId: number;
+  isRefund?: boolean;
 }

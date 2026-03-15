@@ -6,4 +6,5 @@ export default interface UpdateExpenseReqBody {
   currency: 'EUR' | 'RON';
   userId: number;
   date?: string;
+  isRefund?: boolean;
 }
