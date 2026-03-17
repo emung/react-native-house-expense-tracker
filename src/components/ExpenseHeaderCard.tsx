@@ -4,9 +4,10 @@ type ExpenseHeaderCardProps = {
   text: string;
   value: number;
   suffix?: string;
+  refundValue?: number;
 };
 
-export default function ExpenseHeaderCard({ text, value, suffix }: ExpenseHeaderCardProps) {
+export default function ExpenseHeaderCard({ text, value, suffix, refundValue }: ExpenseHeaderCardProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{text}</Text>
@@ -14,6 +15,12 @@ export default function ExpenseHeaderCard({ text, value, suffix }: ExpenseHeader
         {value}
         {suffix ? ` ${suffix}` : ''}
       </Text>
+      {refundValue !== undefined && refundValue > 0 && (
+        <Text style={styles.refundValue}>
+          {refundValue}
+          {suffix ? ` ${suffix}` : ''}
+        </Text>
+      )}
     </View>
   );
 }
@@ -46,7 +53,13 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#BB86FC',
+    color: '#E57373',
+    textAlign: 'center'
+  },
+  refundValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#66BB6A',
     textAlign: 'center'
   }
 });

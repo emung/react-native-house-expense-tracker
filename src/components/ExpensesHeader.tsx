@@ -12,6 +12,8 @@ export default function ExpensesHeader({ expensesMeta }: ExpensesHeaderProps) {
   const [totalEurSum, setTotalEurSum] = useState(0);
   const [totalRonCount, setTotalRonCount] = useState(0);
   const [totalRonSum, setTotalRonSum] = useState(0);
+  const [totalEurRefund, setTotalEurRefund] = useState(0);
+  const [totalRonRefund, setTotalRonRefund] = useState(0);
 
   useEffect(() => {
     if (expensesMeta) {
@@ -21,6 +23,8 @@ export default function ExpensesHeader({ expensesMeta }: ExpensesHeaderProps) {
       setTotalRonCount(ronExpensesMeta?.count || 0);
       setTotalEurSum(eurExpensesMeta?.sum || 0);
       setTotalRonSum(ronExpensesMeta?.sum || 0);
+      setTotalEurRefund(eurExpensesMeta?.refundSum || 0);
+      setTotalRonRefund(ronExpensesMeta?.refundSum || 0);
     }
   }, [expensesMeta]);
 
@@ -28,9 +32,9 @@ export default function ExpensesHeader({ expensesMeta }: ExpensesHeaderProps) {
     <View style={styles.outerContainer}>
       <View style={styles.cardsContainer}>
         <ExpenseHeaderCard text="EUR count" value={totalEurCount} />
-        <ExpenseHeaderCard text="EUR sum" value={totalEurSum} suffix="€" />
+        <ExpenseHeaderCard text="EUR sum" value={totalEurSum} suffix="€" refundValue={totalEurRefund} />
         <ExpenseHeaderCard text="RON count" value={totalRonCount} />
-        <ExpenseHeaderCard text="RON sum" value={totalRonSum} suffix="RON" />
+        <ExpenseHeaderCard text="RON sum" value={totalRonSum} suffix="RON" refundValue={totalRonRefund} />
       </View>
     </View>
   );

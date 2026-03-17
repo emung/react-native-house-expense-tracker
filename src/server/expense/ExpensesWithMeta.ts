@@ -10,4 +10,5 @@ export interface CurrencyMetadata {
   currency: string;
   sum: number;
   count: number;
+  refundSum: number;
 }
