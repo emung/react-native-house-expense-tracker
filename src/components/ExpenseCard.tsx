@@ -20,7 +20,7 @@ export default function ExpenseCard({ expense, onEdit, onDelete }: ExpenseCardPr
           <Text style={styles.description} numberOfLines={1}>
             {expense.description}
           </Text>
-          <Text style={styles.amount}>
+          <Text style={[styles.amount, { color: expense.isRefund ? '#66BB6A' : '#E57373' }]}>
             {expense.amount.toFixed(2)} <Text style={styles.currency}>{expense.currency}</Text>
           </Text>
         </View>
@@ -102,8 +102,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     fontSize: 18,
-    fontWeight: '800',
-    color: '#BB86FC'
+    fontWeight: '800'
   },
   currency: {
     fontSize: 13,
