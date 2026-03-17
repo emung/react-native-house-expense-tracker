@@ -4,7 +4,6 @@ export default interface UpdateExpenseReqBody {
   category: string;
   recipient: string;
   currency: 'EUR' | 'RON';
-  userId: number;
   date?: string;
   isRefund?: boolean;
 }

@@ -26,7 +26,6 @@ type ExpenseFormModalProps = {
 };
 
 const CURRENCIES: ('EUR' | 'RON')[] = ['EUR', 'RON'];
-const DEFAULT_USER_ID = 1;
 
 export default function ExpenseFormModal({
   visible,
@@ -117,7 +116,6 @@ export default function ExpenseFormModal({
           category: category.trim(),
           recipient: recipient.trim(),
           currency,
-          userId: DEFAULT_USER_ID,
           date: dateToIsoString(date),
           isRefund: isRefund
         });
@@ -128,7 +126,6 @@ export default function ExpenseFormModal({
           category: category.trim(),
           recipient: recipient.trim(),
           currency,
-          userId: DEFAULT_USER_ID,
           date: dateToIsoString(date),
           isRefund: isRefund
         });

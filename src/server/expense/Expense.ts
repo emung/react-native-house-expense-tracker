@@ -6,6 +6,5 @@ export default interface Expense {
   category: string;
   recipient: string;
   currency: 'EUR' | 'RON';
-  userId: number;
   isRefund?: boolean;
 }

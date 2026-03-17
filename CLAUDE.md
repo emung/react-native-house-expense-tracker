@@ -29,7 +29,7 @@ No test framework is configured.
 ### Data Layer
 - `src/server/constants.ts` — API base URL (`http://tracker.local/api/v1`)
 - `src/server/expense/ExpenseService.ts` — Axios-based service class with CRUD methods
-- `src/server/expense/Expense.ts` — Core data model: `id, amount, date, description, category, recipient, currency ('EUR'|'RON'), userId`
+- `src/server/expense/Expense.ts` — Core data model: `id, amount, date, description, category, recipient, currency ('EUR'|'RON')`
 - `src/server/expense/ExpensesWithMeta.ts` — Response wrapper with expenses array + currency sums
 - No state management library — local `useState` in page components, service instantiated per-file
 

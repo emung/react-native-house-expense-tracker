@@ -99,8 +99,4 @@ User taps "Add" / Edit icon / Delete icon
 - **Validation errors**: highlight invalid fields with red border + helper text
 - **Loading state**: disable submit button and show a spinner while request is in flight
 
----
 
-## What userId to use?
-
-The `CreateExpenseReqBody` requires a `userId`. Since there's no auth system in the app, the userId will be hardcoded to `1` for now. This can be updated later when authentication is added.
