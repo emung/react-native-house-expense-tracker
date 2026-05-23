@@ -9,7 +9,7 @@ const HEADERS = ['ID', 'Date', 'Description', 'Category', 'Recipient', 'Amount',
  */
 function escapeField(value: string | number | boolean | undefined | null): string {
   const str = value == null ? '' : String(value);
-  const needsQuoting = str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r');
+  const needsQuoting = str.includes(';') || str.includes('"') || str.includes('\n') || str.includes('\r');
   if (!needsQuoting) {
     return str;
   }
@@ -17,7 +17,7 @@ function escapeField(value: string | number | boolean | undefined | null): strin
 }
 
 function row(fields: (string | number | boolean | undefined | null)[]): string {
-  return fields.map(escapeField).join(',');
+  return fields.map(escapeField).join(';');
 }
 
 export function expensesToCsv(expenses: Expense[]): string {
@@ -31,7 +31,7 @@ export function expensesToCsv(expenses: Expense[]): string {
         e.description,
         e.category,
         e.recipient,
-        e.amount,
+        String(e.amount).replace('.', ','),
         e.currency,
         e.isRefund ? 'Yes' : 'No',
       ])
