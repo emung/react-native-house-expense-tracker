@@ -2,16 +2,23 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 const CURRENCIES: ('EUR' | 'RON')[] = ['EUR', 'RON'];
 
-type CurrencyToggleProps = {
-  selected: 'EUR' | 'RON';
-  onSelect: (currency: 'EUR' | 'RON') => void;
-};
+// When showAll is false (default), only EUR/RON values are valid.
+// When showAll is true, 'All' is also a valid selection.
+type CurrencyToggleProps =
+  | { showAll?: false; selected: 'EUR' | 'RON'; onSelect: (currency: 'EUR' | 'RON') => void }
+  | { showAll: true; selected: 'All' | 'EUR' | 'RON'; onSelect: (currency: 'All' | 'EUR' | 'RON') => void };
 
-export default function CurrencyToggle({ selected, onSelect }: CurrencyToggleProps) {
+export default function CurrencyToggle({ showAll = false, selected, onSelect }: CurrencyToggleProps) {
+  const options: ('All' | 'EUR' | 'RON')[] = showAll ? ['All', ...CURRENCIES] : CURRENCIES;
+
   return (
     <View style={styles.container}>
-      {CURRENCIES.map(cur => (
-        <Pressable key={cur} style={[styles.option, selected === cur && styles.selected]} onPress={() => onSelect(cur)}>
+      {options.map(cur => (
+        <Pressable
+          key={cur}
+          style={[styles.option, selected === cur && styles.selected]}
+          onPress={() => (onSelect as (currency: 'All' | 'EUR' | 'RON') => void)(cur)}
+        >
           <Text style={[styles.optionText, selected === cur && styles.selectedText]}>{cur}</Text>
         </Pressable>
       ))}

@@ -69,6 +69,22 @@ export default class ExpenseService {
   }
 
   /**
+   * Searches expenses by description or recipient (case-insensitive).
+   * @param q - The search query
+   * @returns A promise that resolves to an ExpensesWithMeta object containing the matching expenses
+   * @throws Error if the network request fails
+   */
+  async searchExpenses(q: string): Promise<ExpensesWithMeta> {
+    try {
+      const response = await axios.get<ExpensesWithMeta>(`${EXPENSES_URL}/search?q=${q}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error searching expenses:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Fetches all expenses by description from the server.
    * @param description - The description of expenses to retrieve
    * @returns A promise that resolves to an AllExpenses object containing the list of expenses

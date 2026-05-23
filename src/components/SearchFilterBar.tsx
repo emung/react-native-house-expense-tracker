@@ -30,7 +30,7 @@ export default function SearchFilterBar({
         <Ionicons name="search" size={18} color="#9E9E9E" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search by description…"
+          placeholder="Search by description or recipient…"
           placeholderTextColor="#707070"
           value={searchText}
           onChangeText={onSearchChange}

@@ -1,5 +1,6 @@
 import AddExpenseButton from '@/src/components/AddExpenseButton';
 import ConfirmDeleteDialog from '@/src/components/ConfirmDeleteDialog';
+import CurrencyToggle from '@/src/components/CurrencyToggle';
 import ExportButton from '@/src/components/ExportButton';
 import ExpenseFormModal from '@/src/components/ExpenseFormModal';
 import ExpensesList from '@/src/components/ExpensesList';
@@ -12,7 +13,7 @@ import ExpensesWithMeta, { CurrencyMetadata } from '@/src/server/expense/Expense
 import UpdateExpenseReqBody from '@/src/server/expense/UpdateExpenseReqBody';
 import { expensesToCsv } from '@/src/utils/csvExport';
 import { shareCsv } from '@/src/utils/fileShare';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Platform, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { de, registerTranslation } from 'react-native-paper-dates';
 
@@ -28,7 +29,20 @@ export default function Index() {
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchText, setSearchText] = useState('');
+  const [selectedCurrency, setSelectedCurrency] = useState<'All' | 'EUR' | 'RON'>('All');
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const displayedExpenses = useMemo<Expense[]>(() => {
+    const expenses = allExpensesWithMeta?.expenses ?? [];
+    if (selectedCurrency === 'All') return expenses;
+    return expenses.filter(e => e.currency === selectedCurrency);
+  }, [allExpensesWithMeta, selectedCurrency]);
+
+  const displayedMeta = useMemo<CurrencyMetadata[] | null>(() => {
+    if (!expensesMeta) return null;
+    if (selectedCurrency === 'All') return expensesMeta;
+    return expensesMeta.filter(m => m.currency === selectedCurrency);
+  }, [expensesMeta, selectedCurrency]);
 
   // CRUD modal state
   const [formModalVisible, setFormModalVisible] = useState(false);
@@ -58,7 +72,7 @@ export default function Index() {
     }
 
     debounceTimer.current = setTimeout(async () => {
-      const result = await expenseService.getAllExpensesByDescription(searchText);
+      const result = await expenseService.searchExpenses(searchText);
       setAllExpensesWithMeta(result);
       setExpensesMeta(result.sums);
     }, 300);
@@ -73,7 +87,7 @@ export default function Index() {
   // --- Refresh helper (respects current search/filter) ---
   const refreshExpenses = async () => {
     if (searchText) {
-      const result = await expenseService.getAllExpensesByDescription(searchText);
+      const result = await expenseService.searchExpenses(searchText);
       setAllExpensesWithMeta(result);
       setExpensesMeta(result.sums);
     } else if (selectedCategory !== 'All') {
@@ -157,7 +171,7 @@ export default function Index() {
   };
 
   const handleExport = async () => {
-    const expenses = allExpensesWithMeta?.expenses ?? [];
+    const expenses = displayedExpenses;
     if (expenses.length === 0) {
       Alert.alert('Nothing to export', 'There are no expenses to export.');
       return;
@@ -186,7 +200,8 @@ export default function Index() {
           </View>
         )}
       </View>
-      <ExpensesHeader expensesMeta={expensesMeta} />
+      <ExpensesHeader expensesMeta={displayedMeta} />
+      <CurrencyToggle showAll={true} selected={selectedCurrency} onSelect={setSelectedCurrency} />
       <SearchFilterBar
         categories={categories}
         selectedCategory={selectedCategory}
@@ -195,7 +210,7 @@ export default function Index() {
         onCategorySelect={handleCategorySelect}
       />
       <ExpensesList
-        expenses={allExpensesWithMeta?.expenses || []}
+        expenses={displayedExpenses}
         onEdit={handleEditPress}
         onDelete={handleDeletePress}
       />
