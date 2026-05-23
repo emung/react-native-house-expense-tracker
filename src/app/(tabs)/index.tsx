@@ -1,5 +1,6 @@
 import AddExpenseButton from '@/src/components/AddExpenseButton';
 import ConfirmDeleteDialog from '@/src/components/ConfirmDeleteDialog';
+import ExportButton from '@/src/components/ExportButton';
 import ExpenseFormModal from '@/src/components/ExpenseFormModal';
 import ExpensesList from '@/src/components/ExpensesList';
 import SearchFilterBar from '@/src/components/SearchFilterBar';
@@ -9,8 +10,10 @@ import Expense from '@/src/server/expense/Expense';
 import ExpenseService from '@/src/server/expense/ExpenseService';
 import ExpensesWithMeta, { CurrencyMetadata } from '@/src/server/expense/ExpensesWithMeta';
 import UpdateExpenseReqBody from '@/src/server/expense/UpdateExpenseReqBody';
+import { expensesToCsv } from '@/src/utils/csvExport';
+import { shareCsv } from '@/src/utils/fileShare';
 import { useEffect, useRef, useState } from 'react';
-import { Platform, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Alert, Platform, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { de, registerTranslation } from 'react-native-paper-dates';
 
 const expenseService = new ExpenseService();
@@ -153,11 +156,35 @@ export default function Index() {
     }
   };
 
+  const handleExport = async () => {
+    const expenses = allExpensesWithMeta?.expenses ?? [];
+    if (expenses.length === 0) {
+      Alert.alert('Nothing to export', 'There are no expenses to export.');
+      return;
+    }
+
+    try {
+      const now = new Date();
+      const pad = (n: number) => String(n).padStart(2, '0');
+      const filename = `expenses-${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}-${pad(now.getHours())}-${pad(now.getMinutes())}.csv`;
+
+      const csv = expensesToCsv(expenses);
+      await shareCsv(csv, filename);
+    } catch (error) {
+      Alert.alert('Export failed', error instanceof Error ? error.message : 'An unexpected error occurred.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.titleRow}>
         <Text style={styles.title}>House expenses</Text>
-        {isWide && <AddExpenseButton onPress={handleAddPress} />}
+        {isWide && (
+          <View style={styles.titleRowActions}>
+            <ExportButton onPress={handleExport} />
+            <AddExpenseButton onPress={handleAddPress} />
+          </View>
+        )}
       </View>
       <ExpensesHeader expensesMeta={expensesMeta} />
       <SearchFilterBar
@@ -173,7 +200,8 @@ export default function Index() {
         onDelete={handleDeletePress}
       />
 
-      {/* FAB for mobile */}
+      {/* FABs for mobile */}
+      {!isWide && <ExportButton onPress={handleExport} />}
       {!isWide && <AddExpenseButton onPress={handleAddPress} />}
 
       {/* Modals */}
@@ -223,5 +251,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#E0E0E0' // Light text color
+  },
+  titleRowActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   }
 });
