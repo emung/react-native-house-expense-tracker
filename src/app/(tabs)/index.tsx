@@ -44,6 +44,11 @@ export default function Index() {
     return expensesMeta.filter(m => m.currency === selectedCurrency);
   }, [expensesMeta, selectedCurrency]);
 
+  const allRecipients = useMemo<string[]>(() => {
+    const expenses = allExpensesWithMeta?.expenses ?? [];
+    return [...new Set(expenses.map(e => e.recipient).filter(Boolean))].sort();
+  }, [allExpensesWithMeta]);
+
   // CRUD modal state
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
@@ -224,6 +229,8 @@ export default function Index() {
         visible={formModalVisible}
         expense={selectedExpense}
         categories={categories}
+        recipients={allRecipients}
+        initialCategory={selectedCategory !== 'All' ? selectedCategory : undefined}
         onSave={handleSave}
         onUpdate={handleUpdate}
         onClose={() => {

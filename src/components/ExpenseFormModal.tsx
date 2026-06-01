@@ -20,6 +20,8 @@ type ExpenseFormModalProps = {
   visible: boolean;
   expense: Expense | null;
   categories: string[];
+  recipients: string[];
+  initialCategory?: string;
   onSave: (data: CreateExpenseReqBody) => Promise<void>;
   onUpdate: (id: number, data: UpdateExpenseReqBody) => Promise<void>;
   onClose: () => void;
@@ -31,6 +33,8 @@ export default function ExpenseFormModal({
   visible,
   expense,
   categories,
+  recipients,
+  initialCategory,
   onSave,
   onUpdate,
   onClose
@@ -51,6 +55,7 @@ export default function ExpenseFormModal({
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
   const [categoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
+  const [recipientFocused, setRecipientFocused] = useState(false);
 
   const dateToIsoString = (d: Date): string => {
     const now = new Date();
@@ -77,7 +82,7 @@ export default function ExpenseFormModal({
       } else {
         setDescription('');
         setAmount('');
-        setCategory('');
+        setCategory(initialCategory || '');
         setRecipient('');
         setCurrency('EUR');
         setDate(new Date());
@@ -228,9 +233,51 @@ export default function ExpenseFormModal({
               {errors.category && <Text style={styles.errorText}>{errors.category}</Text>}
             </View>
 
-            {renderField('Recipient', recipient, setRecipient, 'recipient', {
-              placeholder: 'e.g. Hornbach, Obi, etc..'
-            })}
+            {/* Recipient with autocomplete */}
+            <View style={styles.fieldContainer}>
+              <Text style={styles.label}>Recipient</Text>
+              <TextInput
+                style={[styles.input, errors.recipient && styles.inputError]}
+                value={recipient}
+                onChangeText={text => {
+                  setRecipient(text);
+                  if (errors.recipient) {
+                    setErrors(prev => {
+                      const next = { ...prev };
+                      delete next.recipient;
+                      return next;
+                    });
+                  }
+                }}
+                onFocus={() => setRecipientFocused(true)}
+                onBlur={() => setTimeout(() => setRecipientFocused(false), 150)}
+                placeholder="e.g. Hornbach, Obi, etc.."
+                placeholderTextColor="#707070"
+                autoCorrect={false}
+              />
+              {errors.recipient && <Text style={styles.errorText}>{errors.recipient}</Text>}
+              {recipientFocused && recipient.length > 0 && (() => {
+                const filtered = recipients
+                  .filter(r => r.toLowerCase().includes(recipient.toLowerCase()) && r !== recipient)
+                  .slice(0, 5);
+                return filtered.length > 0 ? (
+                  <View style={styles.suggestionList}>
+                    {filtered.map(r => (
+                      <Pressable
+                        key={r}
+                        style={({ pressed }) => [styles.suggestionItem, pressed && styles.suggestionItemPressed]}
+                        onPress={() => {
+                          setRecipient(r);
+                          setRecipientFocused(false);
+                        }}
+                      >
+                        <Text style={styles.suggestionText}>{r}</Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                ) : null;
+              })()}
+            </View>
 
             {/* Date picker */}
             <View style={styles.fieldContainer}>
@@ -596,5 +643,26 @@ const styles = StyleSheet.create({
   categoryItemTextSelected: {
     color: '#BB86FC',
     fontWeight: '600'
+  },
+  suggestionList: {
+    backgroundColor: '#2A2A2A',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#333',
+    marginTop: 2,
+    overflow: 'hidden'
+  },
+  suggestionItem: {
+    paddingHorizontal: 12,
+    paddingVertical: 11,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333'
+  },
+  suggestionItemPressed: {
+    backgroundColor: '#383838'
+  },
+  suggestionText: {
+    fontSize: 14,
+    color: '#E0E0E0'
   }
 });
