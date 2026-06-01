@@ -12,12 +12,12 @@ export default function ExpenseHeaderCard({ text, value, suffix, refundValue }: 
     <View style={styles.container}>
       <Text style={styles.text}>{text}</Text>
       <Text style={styles.value}>
-        {value}
+        {suffix ? value.toFixed(2) : value}
         {suffix ? ` ${suffix}` : ''}
       </Text>
       {refundValue !== undefined && refundValue > 0 && (
         <Text style={styles.refundValue}>
-          {refundValue}
+          {suffix ? refundValue.toFixed(2) : refundValue}
           {suffix ? ` ${suffix}` : ''}
         </Text>
       )}
