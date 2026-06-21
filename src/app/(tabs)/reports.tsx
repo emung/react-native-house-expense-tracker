@@ -37,7 +37,9 @@ export default function Reports() {
         for (const exp of filtered) {
           const key = breakdownMode === 'category' ? exp.category : exp.recipient;
           const prev = totals.get(key) || { total: 0, count: 0 };
-          totals.set(key, { total: prev.total + exp.amount, count: prev.count + 1 });
+          if (!exp.isRefund) {
+            totals.set(key, { total: prev.total + exp.amount, count: prev.count + 1 });
+          }
         }
 
         const grandTotal = Array.from(totals.values()).reduce((sum, v) => sum + v.total, 0);
